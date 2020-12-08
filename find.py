@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import copy
 
 final_nodes2 = int(input("Please type in the final number of nodes: "))
-m_parameter2 = 10#int(input("\nPlease type in the least number of each nood connected: "))
+m_parameter2 = 7#int(input("\nPlease type in the least number of each nood connected: "))
 
 link_possible = 0.7#float(input("\nPlease type in the probability that the two nodes can be connected(0～1): "))
     
@@ -51,10 +51,10 @@ node_lists_community1 = []
 node_lists_community2 = []
 for k in range(2):
     node_lists_community1.append(k)
-for k in range(final_nodes2):
-    l=k
+for k in range(final_nodes2-2):
+    l=k+2
     node_lists_community2.append(l)
-all_nodes = node_lists_community2
+all_nodes = node_lists_community1+ node_lists_community2
 
 for h in all_nodes:
 #进行指定次数的循环来创造用户指定数目的节点的建立
@@ -70,19 +70,19 @@ for k in range(final_nodes2-1+5):
 print("\nFinal number of nodes ({}) reached".format(len(G2.nodes())))
 
 node_con=[]
-for i in range(55):
+for i in range(10000):
     node_con.append([])
 temp=[]
-for i in range(55):
+for i in range(10000):
     temp.append([])
 temp1=[]    
-for i in range(55):
+for i in range(10000):
     temp1.append(temp)
 temp2=[]
-for i in range(55):
+for i in range(10000):
     temp2.append(temp1)
 Connet_Nodes=[]
-for i in range(55):
+for i in range(10000):
     Connet_Nodes.append(temp2)
  
 for jsd, nbrs in G2.adjacency():
@@ -121,9 +121,13 @@ for coun1 in range(len(G2.nodes())):
         coun2+=1
 
 path=[]
+#PN1 =int(input("\nThe first person's number(small than {}): ".format(final_nodes2)))
+#PN2 =int(input("\nThe second person's number(small than {}): ".format(final_nodes2)))   
+
 
 PN1 =random.randint(0,final_nodes2)#int(input("\nThe first person's number(small than {}): ".format(final_nodes2)))
 PN2 =random.randint(0,final_nodes2)#int(input("\nThe second person's number(small than {}): ".format(final_nodes2)))   
+
 '''
 if PN1==PN2:
     path.append([(PN1,PN2)])
@@ -150,21 +154,21 @@ if PN1==PN2:
 else:
     for node_depth_1 in node_connnn[PN1]:
         if node_depth_1 == PN2:
-            path.append([(PN1,node_depth_1),(node_depth_1,PN2)])
+            path.append([(PN1,node_depth_1)])
         else:
             count_1=0
             for node_depth_2 in Connet_Nodes[PN1][count_1]:
                 if node_depth_2 == PN2:
-                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,PN2)])
+                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2)])
                 else:
                     count_2=0
                     for node_depth_3 in Connet_Nodes_Copy[PN1][count_1][count_2]:
                         if node_depth_3 == PN2:
-                            path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3),(node_depth_3,PN2)])
+                            path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3)])
                         else:
                             for node2_depth_1 in node_connnn[PN2]:
                                 if node2_depth_1 == node_depth_3:
-                                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3),(node_depth_3,node2_depth_1),(node2_depth_1,PN2)])
+                                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3),(node2_depth_1,PN2)])
                                 else:
                                     count2_1=0
                                     for node2_depth_2 in Connet_Nodes[PN2][count2_1]:
@@ -173,15 +177,18 @@ else:
                                         else:
                                             count2_2=0
                                             for node2_depth_3 in Connet_Nodes_Copy[PN2][count2_1][count2_2]:
+                                                #print(Connet_Nodes_Copy[PN2][count2_1][count2_2])
+                                                #print(PN2,count2_1,count2_2)
+                                                #print()
                                                 if node2_depth_3 == node_depth_3:
-                                                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3),(node2_depth_3,node2_depth_2),(node2_depth_2,node2_depth_1),(node2_depth_1,PN2)])
-                                                if count2_2 < 49:
+                                                    path.append([(PN1,node_depth_1),(node_depth_1,node_depth_2),(node_depth_2,node_depth_3),(node2_depth_3,node2_depth_2),(node2_depth_2,node2_depth_1),(node2_depth_1,PN2)]) 
+                                                if count2_2 < len(Connet_Nodes_Copy[PN2][count2_1])-1:
                                                     count2_2+=1
-                                        if count2_1 < 49:
+                                        if count2_1 < len(Connet_Nodes[PN2])-1:
                                             count2_1+=1
-                        if count_1 < 49:
+                        if count_2 < len(Connet_Nodes_Copy[PN1][count_1])-1:
                             count_2+=1
-                if count_1 < 49:
+                if count_1 < len(Connet_Nodes[PN1])-1:
                     count_1+=1
 
 
